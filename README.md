@@ -1,109 +1,78 @@
-# Git flow
+# Git Flow
 
-## Git Branch
+## Git Branches
 
-Dự án áp dụng mô hình quản lý nhánh gồm 3 loại chính: `main`, `dev`, và `feature/*`.  
-Mục tiêu là **tách biệt code ổn định, code đang phát triển và code đang làm tính năng**.
-
----
-
-### 1. Nhánh `main`
-
-**Mục đích**
-- Chứa **phiên bản ổn định** của dự án
-- Sẵn sàng để deploy lên môi trường production
-
-**Đặc điểm**
-- Code trên `main` phải luôn:
-  - Build thành công
-  - Chạy ổn định
-  - Không chứa code thử nghiệm
-
-**Quy tắc**
-- Không commit trực tiếp vào `main`
-- Chỉ merge từ nhánh `dev`
-- Mỗi lần merge vào `main` tương ứng với một version hoặc mốc phát hành
+The project adopts a branch management model with three main branch types: `main`, `dev`, and `feature/*`.  
+The goal is to **separate stable code, code under development, and feature-specific work**.
 
 ---
 
-### 2. Nhánh `dev`
+### 1. `main` Branch
 
-**Mục đích**
-- Là nhánh phát triển chính của dự án
-- Dùng để tích hợp các tính năng đã hoàn thành từ các nhánh `feature/*`
+**Purpose**
+- Contains the **stable version** of the project
+- Ready to be deployed to the production environment
 
-**Đặc điểm**
-- Code trên `dev`:
-  - Có thể chưa hoàn toàn ổn định
-  - Nhưng phải build được và chạy được
-- Là nơi kiểm tra việc tích hợp nhiều tính năng trước khi đưa lên `main`
+**Characteristics**
+- Code on `main` must always:
+  - Build successfully
+  - Run stably
+  - Contain no experimental code
 
-**Quy tắc**
-- Không commit trực tiếp vào `dev`
-- Chỉ merge thông qua Pull Request từ `feature/*`
-- Nên pull/rebase thường xuyên để tránh conflict
+**Rules**
+- Do not commit directly to `main`
+- Only merge from the `dev` branch
+- Each merge into `main` corresponds to a release version or milestone
 
 ---
 
-### 3. Nhánh `feature/xxx`
+### 2. `dev` Branch
 
-**Mục đích**
-- Dùng để phát triển **một tính năng cụ thể** hoặc **phần việc của một người**
+**Purpose**
+- The primary development branch of the project
+- Used to integrate completed features from `feature/*` branches
 
-**Cách đặt tên**
-- Theo chức năng:
+**Characteristics**
+- Code on `dev`:
+  - May not be fully stable
+  - Must be buildable and runnable
+- Acts as the integration and testing stage before merging into `main`
+
+**Rules**
+- Do not commit directly to `dev`
+- Only merge via Pull Requests from `feature/*` branches  
+  *(Pull Request: https://docs.github.com/en/pull-requests)*
+- Regularly pull or rebase to avoid conflicts  
+  *(Rebase: https://git-scm.com/docs/git-rebase)*
+
+---
+
+### 3. `feature/xxx` Branch
+
+**Purpose**
+- Used to develop **a specific feature** or **an individual’s task**
+
+**Naming Convention**
+- By functionality:
   - `feature/login`
   - `feature/user-management`
-- Theo người tham gia:
+- By contributor:
   - `feature/taiphd`
 
-**Đặc điểm**
-- Mỗi nhánh chỉ nên tập trung vào **một feature**
-- Có thể commit tự do trong quá trình phát triển
+**Characteristics**
+- Each branch should focus on **a single feature**
+- Free commits are allowed during development
 
-**Quy tắc**
-- Khi hoàn thành feature:
-  - Push code lên repo
-  - Tạo Pull Request vào nhánh `dev`
-- Sau khi merge:
-  - Có thể xóa nhánh `feature/xxx` để tránh repo ngày càng nặng
+**Rules**
+- When the feature is completed:
+  - Push code to the repository
+  - Create a Pull Request into the `dev` branch
+- After merging:
+  - The `feature/xxx` branch can be deleted to keep the repository clean
 
 ---
 
-### Luồng làm việc tổng quát
+### Overall Workflow
 
 ```text
 feature/xxx  →  dev  →  main
-```
-1. Tạo nhánh feature/xxx từ dev
-
-2. Phát triển tính năng trên feature/xxx
-
-3. Tạo Pull Request merge vào dev
-
-4. Khi dev ổn định → merge vào main
-
-### Quy ước commit message
-- Viết bằng tiếng Việt
-
-- Tiêu đề ngắn gọn
-
-- Sử dụng tiền tố + tiêu đề khi commit
-
-| Prefix     | Ý nghĩa                                 |
-| ---------- | --------------------------------------- |
-| `feat`     | Thêm tính năng mới                      |
-| `fix`      | Sửa lỗi                                 |
-| `refactor` | Tái cấu trúc code, không thay đổi logic |
-| `perf`     | Cải thiện hiệu năng                     |
-| `style`    | Chỉnh format, không ảnh hưởng logic     |
-| `test`     | Thêm hoặc sửa test                      |
-| `docs`     | Cập nhật tài liệu                       |
-| `chore`    | Công việc phụ trợ (config, build, deps) |
-| `ci`       | Thay đổi CI/CD                          |
-| `revert`   | Hoàn tác commit trước                   |
-
-#### Ví dụ commit message hợp lệ
-- feat: cập nhật login API
-
-- docs: thêm tài liệu git workflow guide
