@@ -31,3 +31,5 @@ const FundAllocation = sequelize.define('FundAllocation', {
     underscored: true, 
     timestamps: false
 })
+
+export default FundAllocation
