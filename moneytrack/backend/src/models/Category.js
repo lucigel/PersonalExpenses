@@ -32,6 +32,11 @@ const Category = sequelize.define('Category', {
         allowNull: false, 
         defaultValue: DataTypes.NOW
     },
+}, {
+    schema: 'public',
+    tableName: 'categories', 
+    timestamps: false, 
+    underscored: true
 })
 
 export default Category 

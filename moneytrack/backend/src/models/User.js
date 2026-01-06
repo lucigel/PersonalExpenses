@@ -7,39 +7,28 @@ const User = sequelize.define('User', {
         primaryKey: true,
         autoIncrement: true
     },
-    email: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        unique: true,
-        validate: {
-            isEmail: true
-        }
-    },
-    password: {
+    username: {
+        type: DataTypes.STRING, 
+        allowNull: false
+    }, 
+    password_hash: {
         type: DataTypes.STRING,
         allowNull: false
     },
-    fullName: {
-        type: DataTypes.STRING,
-        allowNull: true
-    },
-    avatar: {
-        type: DataTypes.STRING,
-        allowNull: true
-    }, 
-    createdAt: {
+    created_at: {
         type: DataTypes.DATE, 
         allowNull: false, 
         defaultValue: DataTypes.NOW
     },
-    updatedAt: {
+    updated_at: {
         type: DataTypes.DATE, 
         allowNull: false,
         defaultValue: DataTypes.NOW
     }
 }, {
+    schema: 'public',
     tableName: 'users',
-    timestamps: true,
+    timestamps: false,
     underscored: true
 })
 
