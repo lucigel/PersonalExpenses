@@ -1,24 +1,30 @@
 import sequelize from './config/database.js';
+import User from './models/User.js';   
 
-async function testConnection() {
+const main = async () => {
     try {
-        await sequelize.authenticate();
-        console.log('Kết nối database thành công!');
-        console.log('Database:', sequelize.config.database);
-        console.log('Host:', sequelize.config.host);
-        console.log('Port:', sequelize.config.port);
-        
-        // Đóng kết nối sau khi test
+        await sequelize.authenticate(); 
+        console.log('DB Connection Successfully !')
+
+        const desc = await User.describe(); 
+        console.log(desc); 
+
+        const u = await User.create({
+            username: 'testuser', 
+            password_hash: 'hash123'
+        }); 
+
+        console.log('created user with id', u.id); 
+
+        const found = await User.findByPk(u.id); 
+        console.log('found username', found.username); 
+
+        await found.destroy(); 
+    } catch (e) {
+        console.error(e); 
+    } finally {
         await sequelize.close();
-        console.log('Đã đóng kết nối database');
-        process.exit(0);
-    } catch (error) {
-        console.error('Lỗi kết nối database:');
-        console.error('Message:', error.message);
-        console.error('Chi tiết:', error);
-        process.exit(1);
     }
-}
+};
 
-testConnection();
-
+main();
