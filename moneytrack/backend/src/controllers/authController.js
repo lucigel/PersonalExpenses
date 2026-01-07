@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
-import { User } from '../src/models/index.js'
+import { User } from '../models/index.js'
 import { where } from 'sequelize';
 import { signToken } from '../utils/jwt.js';
 
@@ -38,7 +38,7 @@ export const login = async (req, res, next) => {
         if(!ok) return res.status(400).json({ message: 'Invalid credentials' })
             
         const token = signToken({ userId: user.id })
-        
+
         return res.json({
             token, 
             user: { id: user.id, username: user.username }
