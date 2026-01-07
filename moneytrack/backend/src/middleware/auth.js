@@ -13,8 +13,12 @@ const auth = (req, res, next) => {
         }
 
         const decoded = verifyToken(token)
+        const userId = decoded.userId || decoded.id;
+        if (!userId) {
+            return res.status(401).json({ message: 'Unauthorized' });
+        }
 
-        req.user = { id: decoded.userId }; 
+        req.user = { id: userId }; 
         
         return next()
 
