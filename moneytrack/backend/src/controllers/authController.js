@@ -1,10 +1,6 @@
 import bcrypt from 'bcryptjs'
-import jwt from 'jsonwebtoken'
 import { User } from '../models/index.js'
-import { where } from 'sequelize';
 import { signToken } from '../utils/jwt.js';
-
-const JWT_SECRET = process.env.JWT_SECRET || 'dev_secret'; 
 
 export const register = async (req, res, next) => {
     try {
@@ -31,11 +27,11 @@ export const login = async (req, res, next) => {
 
         const user = await User.findOne({ where: { username }})
 
-        if(!user) return res.status(400).json({ message: 'Invalid credentials'})
+        if(!user) return res.status(401).json({ message: 'Invalid credentials'})
 
         const ok = await bcrypt.compare(password, user.password_hash)
 
-        if(!ok) return res.status(400).json({ message: 'Invalid credentials' })
+        if(!ok) return res.status(401).json({ message: 'Invalid credentials' })
             
         const token = signToken({ userId: user.id })
 

@@ -1,27 +1,29 @@
-import { useState } from "react";
-import "./App.css";
-import { Sidebar } from "./components/Sidebar";
-import { Header } from "./components/Header";
-import Dashboard from "./pages/Dashboard";
-import { Navigate, Route, Routes } from "react-router-dom";
-
+import { Routes, Route, Navigate } from 'react-router-dom'
+import { useAuth } from './context/AuthContext'
+import AppLayout from './layouts/AppLayout'
+import Dashboard from './pages/Dashboard'
+import Login from './pages/Login'
 
 function App() {
-  const [collapsed, setCollapsed] = useState(false);
+  const { user } = useAuth()
+
   return (
-    <div className="flex h-screen">
-      <Sidebar collapsed={collapsed} setCollapsed={setCollapsed}/>
-      <div className="flex-1">
-        <Header />
-        <main className="p-4">
-          <Routes>
-            <Route path="/" element={<Navigate to="/dashboard" replace />} />
+    <Routes>
+      {!user ? (
+        <>
+          <Route path="/login" element={<Login />} />
+          <Route path="*" element={<Navigate to="/login" replace />} />
+        </>
+      ) : (
+        <>
+          <Route element={<AppLayout />}>
             <Route path="/dashboard" element={<Dashboard />} />
-          </Routes>
-        </main>
-      </div>
-    </div>
-  );
+            <Route path="*" element={<Navigate to="/dashboard" replace />} />
+          </Route>
+        </>
+      )}
+    </Routes>
+  )
 }
 
-export default App;
+export default App
